@@ -8,7 +8,9 @@ const c_user = require('./controllers/c_user');
 const router = express.Router();
 
 // 3. 配置路由 实例方法
-router.get('/signin', c_user.showSignin);
+router
+    .get('/signin', c_user.showSignin)
+    .post('/signin', c_user.handleSignin)
 
 // 4. 导出
 module.exports = router;

@@ -39,6 +39,28 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        // 客户端发送表单提交请求
+        $('#signin_form').on('submit', function (e) {
+            // 1.阻止表单默认提交
+            e.preventDefault();
+
+            // 2. 获取表单数据
+            const formData = $(this).serialize();
+
+            // 3. 发送ajax请求
+            $.post("/signin", formData, function (data) {
+                // data是服务端返回的响应{}
+                console.log(data);
+
+                // 如果邮箱和密码都正确，来到列表页
+                if (data.code === 200) {
+                    // 客户端重定向
+                    window.location.href = '/';
+                } else {
+                    alert(data.msg);
+                }
+            });
+        })
     </script>
 </body>
 
