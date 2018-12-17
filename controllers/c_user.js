@@ -1,4 +1,5 @@
 // 处理函数的实现
+// 用户登录
 
 // 导入 m_user.js 
 const m_user = require('../models/m_user');
@@ -37,6 +38,11 @@ exports.handleSignin = (req, res) => {
                 msg: '密码不正确！！！'
             });
         }
+        // data[0] 昵称(用户名) (express-session保存信息)
+        // 使用 req.session 保存正确的用户信息
+        req.session.user = data[0];
+        // console.log(req.session.user);
+
         // 4. 返回200的响应
         res.send({
             code: 200,
