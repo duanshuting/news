@@ -18,3 +18,24 @@ exports.checkEmail = (email, callback) => {
     });
 }
 
+//// 验证昵称
+exports.checkNickname = (nickname, callback) => {
+    const sqlStr = 'SELECT * FROM `users` WHERE nickname=?';
+    connection.query(sqlStr, nickname, (err, data) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, data);
+    });
+}
+
+//// 添加新用户
+exports.addUser = (body, callback) => {
+    const sqlStr = 'INSERT INTO `users` SET ?';
+    connection.query(sqlStr, body, (err, data) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, data);
+    });
+}

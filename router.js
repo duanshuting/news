@@ -20,6 +20,8 @@ router
     .get('/topic/:topicID/delete', c_topic.handleDeleTopic)
     .get('/topic/:topicID/edit', c_topic.showEditTopic)
     .post('/edit/topic/:topicID', c_topic.handleEditTopic)
+    .get('/signup', c_user.showSignup)
+    .post('/signup', c_user.handleSignup)
 
 // 4. 导出
 module.exports = router;
