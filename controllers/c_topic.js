@@ -54,3 +54,96 @@ exports.handleCreateTopic = (req, res) => {
         });
     });
 }
+
+////渲染文章详情页
+exports.showTopicDetail = (req, res) => {
+    // 获取当前动态路由参数topicID的值
+    const topicID = req.params.topicID;
+    // console.log(req.params); // {topicID: 1}
+
+    // 让M根据当前选中的id值(topicID)去查询数据库
+    // 让M操作数据库，返回结果 err 和 data
+    m_topic.findTopicById(topicID, (err, data) => {
+        if (err) {
+            return res.send({
+                code: 500,
+                msg: '服务器出现错误'
+            });
+        }
+        if (data.length === 0) {
+            return res.send({
+                code: 1,
+                msg: '该文章已经被删除'
+            });
+        }
+        res.render('topic/show.html', {
+            topic: data[0],
+            sessionId: req.session.user.id
+        });
+    });
+}
+
+//// 删除文章
+exports.handleDeleTopic = (req, res) => {
+    // 获取要删除文章的id
+    const topicID = req.params.topicID;
+
+    // 让M操作数据库：根据topicID删除数据
+    m_topic.deleTopicById(topicID, (err, data) => {
+        if (err) {
+            return res.send({
+                code: 500,
+                msg: '服务器出现错误'
+            });
+        }
+        // 删除成功，回到列表页
+        res.redirect('/');
+    })
+}
+
+//// 渲染编辑页面
+exports.showEditTopic = (req, res) => {
+    const topicID = req.params.topicID;
+
+    // 让M操作数据库：根据topicID查询数据
+    m_topic.findTopicById(topicID, (err, data) => {
+        if(err) {
+            return res.send({
+                code: 500,
+                msg: '服务器出现错误'
+            });
+        }
+        if (data === 0) {
+            return res.send({
+                code: 1,
+                msg: '该文章已经被删除'
+            });
+        }
+        res.render('topic/edit.html', {
+            topic: data[0]
+        });
+    })
+}
+
+//// 处理编辑表单
+exports.handleEditTopic = (req, res) => {
+    // 获取表单数据
+    const body = req.body;
+    // 获取当前要编辑的文章的topicID
+    const topicID = req.params.topicID;
+
+    // 让M操作数据库：根据topicID修改数据
+    m_topic.editTopicById(topicID, body, (err, data) => {
+        if (err) {
+            return res.send({
+                code: 500,
+                msg: '服务器出现错误'
+            });
+        }
+        // 编辑成功，回到详情页(因为是异步操作，所有要客户端返回响应)
+        res.send({
+            code: 200,
+            msg: '文章编辑成功'
+        });
+    });
+}

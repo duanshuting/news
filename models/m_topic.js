@@ -23,3 +23,36 @@ exports.addTopic = (body, callback) => {
         callback(null, data);
     });
 }
+
+//// 根据id查询文章
+exports.findTopicById = (topicID, callback) => {
+    const sqlStr = 'SELECT * FROM `topics` WHERE id=?';
+    connection.query(sqlStr, topicID, (err, data) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, data);
+    });
+}
+
+//// 根据id删除文章
+exports.deleTopicById = (topicID, callback) => {
+    const sqlStr = 'DELETE FROM `topics` WHERE id=?';
+    connection.query(sqlStr, topicID, (err, data) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, data);
+    })
+}
+
+//// 编辑文章(根据topicID修改文章)
+exports.editTopicById = (topicID, body, callback) => {
+    const sqlStr = 'UPDATE `topics` SET ? WHERE id=?';
+    connection.query(sqlStr, [body, topicID], (err, data) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, data);
+    });
+}

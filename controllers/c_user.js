@@ -51,5 +51,14 @@ exports.handleSignin = (req, res) => {
     });
 }
 
+//// 处理用户退出的请求
+exports.handleSignout = (req, res) => {
+    // 1. 清除session中的user信息
+    delete req.session.user;
+
+    // 2. 回到登录页 (服务端重定向适用于同步请求)
+    res.redirect('/signin');
+}
+
 
 
